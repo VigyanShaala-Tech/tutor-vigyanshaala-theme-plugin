@@ -24,8 +24,8 @@ config: t.Dict[str, t.Dict[str, t.Any]] = {
     "defaults": {
         "VERSION": __version__,
         "WELCOME_MESSAGE": "The place for all your online learning",
-        "PRIMARY_COLOR": "#15376D",  # Indigo
-        "ENABLE_DARK_TOGGLE": True,
+        "PRIMARY_COLOR": "#69AB4A",  # Indigo
+        "ENABLE_DARK_TOGGLE": False,
         # Footer links are dictionaries with a "title" and "url"
         # To remove all links, run:
         # tutor config save --set INDIGO_FOOTER_NAV_LINKS=[]
@@ -114,6 +114,9 @@ indigo_styled_mfes = [
     "profile",
     "account",
     "discussions",
+    "communications",
+    "gradebook",
+    "ora-grading"
 ]
 
 for mfe in indigo_styled_mfes:
@@ -122,7 +125,7 @@ for mfe in indigo_styled_mfes:
             (
                 f"mfe-dockerfile-post-npm-install-{mfe}",
                 """
-RUN npm install '@edx/brand@github:@edly-io/brand-openedx#indigo-2.5.0'
+RUN npm install '@edx/brand@git+https://github.com/TitanEd/vigyanshaala-brand.git'
 """,  # noqa: E501
             ),
         ]
@@ -131,7 +134,14 @@ RUN npm install '@edx/brand@github:@edly-io/brand-openedx#indigo-2.5.0'
 hooks.Filters.ENV_PATCHES.add_item(
     (
         "mfe-dockerfile-post-npm-install-authn",
-        "RUN npm install '@edx/brand@github:@edly-io/brand-openedx#indigo-2.5.0'",
+        "RUN npm install '@edx/brand@git+https://github.com/TitanEd/vigyanshaala-brand.git'",
+    )
+)
+
+hooks.Filters.ENV_PATCHES.add_item(
+    (
+        "mfe-dockerfile-post-npm-install-authoring",
+        "RUN npm install '@edx/brand@git+https://github.com/TitanEd/vigyanshaala-brand.git'",
     )
 )
 
