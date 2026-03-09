@@ -125,7 +125,7 @@ for mfe in indigo_styled_mfes:
             (
                 f"mfe-dockerfile-post-npm-install-{mfe}",
                 """
-RUN npm install '@edx/brand@git+https://github.com/VigyanShaala-Tech/vigyanshaala-brand.git'
+RUN npm install '@edx/brand@github:@VigyanShaala-Tech/vs-brand#vigyanshaala-brand'
 """,  # noqa: E501
             ),
         ]
@@ -134,14 +134,14 @@ RUN npm install '@edx/brand@git+https://github.com/VigyanShaala-Tech/vigyanshaal
 hooks.Filters.ENV_PATCHES.add_item(
     (
         "mfe-dockerfile-post-npm-install-authn",
-        "RUN npm install '@edx/brand@git+https://github.com/VigyanShaala-Tech/vigyanshaala-brand.git'",
+        "RUN npm install '@edx/brand@github:@VigyanShaala-Tech/vs-brand#vigyanshaala-brand'",
     )
 )
 
 hooks.Filters.ENV_PATCHES.add_item(
     (
         "mfe-dockerfile-post-npm-install-authoring",
-        "RUN npm install '@edx/brand@git+https://github.com/VigyanShaala-Tech/vigyanshaala-brand.git'",
+        "RUN npm install '@edx/brand@github:@VigyanShaala-Tech/vs-brand#vigyanshaala-brand'",
     )
 )
 
