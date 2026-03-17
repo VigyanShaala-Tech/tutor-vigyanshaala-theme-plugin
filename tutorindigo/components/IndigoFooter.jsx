@@ -118,15 +118,15 @@ const IndigoFooter = () => {
   };
 
   const exploreLinks = [
-    { id: 'footer.link.home', path: '/' },
+    { id: 'footer.link.home', path: '' },
     { id: 'footer.link.courses', path: 'courses' },
-    { id: 'footer.link.aboutUs', path: 'about' },
+    { id: 'footer.link.aboutUs', path: 'story' },
     { id: 'footer.link.contactUs', path: 'contact' },
   ];
 
   const legalLinks = [
-    { id: 'footer.link.privacyPolicy', path: '/privacy' },
-    { id: 'footer.link.termsOfService', path: '/terms' },
+    { id: 'footer.link.privacyPolicy', path: 'privacy' },
+    { id: 'footer.link.termsOfService', path: 'terms' },
   ];
 
   const socialLinks = [
@@ -167,7 +167,7 @@ const IndigoFooter = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="d-flex align-items-center justify-content-center rounded-circle bg-primary p-3 text-white hover-bg-primary transition-fast mr-4"
+                  className="d-flex align-items-center justify-content-center rounded-circle bg-primary p-3 text-white hover-bg-primary transition-fast mr-4 mb-2"
                   aria-label={intl.formatMessage(messages[social.id])}
                   title={intl.formatMessage(messages[social.id])}
                 >
