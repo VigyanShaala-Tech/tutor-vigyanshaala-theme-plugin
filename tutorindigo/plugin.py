@@ -116,7 +116,8 @@ indigo_styled_mfes = [
     "discussions",
     "communications",
     "gradebook",
-    "ora-grading"
+    "ora-grading",
+    "public"
 ]
 
 for mfe in indigo_styled_mfes:
@@ -227,6 +228,34 @@ for mfe in indigo_styled_mfes:
                 },
             },
   """,
+        ),
+    )
+
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_desktop_main_menu.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Modify,
+                widgetId: 'default_contents',
+                fn: modifyMainMenu
+            }
+            """,
+        ),
+    )
+
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_mobile_main_menu.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Modify,
+                widgetId: 'default_contents',
+                fn: modifyMainMenu
+            }
+            """,
         ),
     )
 
