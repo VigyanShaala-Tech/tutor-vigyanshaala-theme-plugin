@@ -2,12 +2,18 @@ const modifyMainMenu = ( widget ) => {
   const intl = useIntl();
   const config = getConfig();
   const PUBLIC_BASE = config.CATALOG_MICROFRONTEND_URL; 
+  const LMS_BASE_URL = config.LMS_BASE_URL;
 
   const messages = {
     'public.header.nav.home': {
       id: 'public.header.nav.home',
       defaultMessage: 'Home',
       description: 'Main navigation link to home page',
+    },
+    'public.header.nav.dashboard': {
+      id: 'public.header.nav.dashboard',
+      defaultMessage: 'My Learning',
+      description: 'Dashboard navigation link to home page',
     },
     'public.header.nav.courses': {
       id: 'public.header.nav.courses',
@@ -52,6 +58,11 @@ const modifyMainMenu = ( widget ) => {
       type: 'item',
       href: PUBLIC_BASE,
       content: intl.formatMessage(messages['public.header.nav.home']),
+    },
+    {
+      type: 'item',
+      href: `${LMS_BASE_URL}/dashboard`,
+      content: intl.formatMessage(messages['public.header.nav.dashboard']),
     },
     {
       type: 'item',
