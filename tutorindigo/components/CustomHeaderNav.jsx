@@ -12,7 +12,7 @@ const modifyMainMenu = ( widget ) => {
     },
     'public.header.nav.dashboard': {
       id: 'public.header.nav.dashboard',
-      defaultMessage: 'My Learning',
+      defaultMessage: 'My Dashboard',
       description: 'Dashboard navigation link to home page',
     },
     'public.header.nav.courses': {
@@ -37,12 +37,7 @@ const modifyMainMenu = ( widget ) => {
     },
     'public.header.nav.supporters': {
       id: 'public.header.nav.supporters',
-      defaultMessage: 'Supporters',
-      description: 'Submenu item under About Us',
-    },
-    'public.header.nav.financials': {
-      id: 'public.header.nav.financials',
-      defaultMessage: 'Financials',
+      defaultMessage: 'Our Investors',
       description: 'Submenu item under About Us',
     },
     'public.header.nav.contactUs': {
@@ -82,9 +77,6 @@ const modifyMainMenu = ( widget ) => {
           </a>
           <a className="dropdown-item" href={`${PUBLIC_BASE}supporter`}>
             {intl.formatMessage(messages['public.header.nav.supporters'])}
-          </a>
-          <a className="dropdown-item" href={`${PUBLIC_BASE}financial`}>
-            {intl.formatMessage(messages['public.header.nav.financials'])}
           </a>
         </div>
       ),

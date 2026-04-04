@@ -11,7 +11,7 @@ const IndigoFooter = () => {
     'footer.description': {
       id: 'footer.description',
       defaultMessage:
-        'Empowering learners worldwide with quality education. Join thousands of students and transform your career with our expert-led courses.',
+        'Empowering learners worldwide to chart sustainable career. Join a tribe of thousands and find your path to something bigger.',
       description: 'Short description text in the footer',
     },
     'footer.getInTouch': {
