@@ -150,7 +150,7 @@ const IndigoFooter = () => {
           <div className='mb-3'>
             <div className="mb-4">
               <img
-                src={`${config.LOGO_URL}`}
+                src={`${config.LOGO_WHITE_URL}`}
                 alt="VigyanShaala"
                 width="120"
               />
