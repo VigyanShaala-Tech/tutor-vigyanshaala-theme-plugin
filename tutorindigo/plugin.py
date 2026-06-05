@@ -259,6 +259,27 @@ for mfe in indigo_styled_mfes:
         ),
     )
 
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_desktop_user_menu_toggle.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Hide,
+                widgetId: 'default_contents',
+            },
+            {
+                op: PLUGIN_OPERATIONS.Insert,
+                widget: {
+                    id: 'custom_desktop_user_menu_toggle_avatar',
+                    type: DIRECT_PLUGIN,
+                    RenderWidget: DesktopUserMenuToggleAvatar,
+                },
+            },
+            """,
+        ),
+    )
+
 paragon_theme_urls = {
     "variants": {
         "light": {
