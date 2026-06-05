@@ -1,3 +1,4 @@
+{% raw %}
 const ChevronIcon = ({ isOpen }) => (
   <svg
     aria-hidden="true"
@@ -82,3 +83,4 @@ const DesktopUserMenuToggleAvatar = () => {
     </span>
   );
 };
+{% endraw %}
