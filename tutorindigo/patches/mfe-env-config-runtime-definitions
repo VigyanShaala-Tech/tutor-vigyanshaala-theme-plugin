@@ -3,3 +3,4 @@
 {{- patch("ThemedLogo.jsx") }}
 {{- patch("ToggleThemeButton.jsx") }}
 {{- patch("CustomHeaderNav.jsx") }}
+{{- patch("CustomHeaderUserMenuDropdown.jsx") }}
