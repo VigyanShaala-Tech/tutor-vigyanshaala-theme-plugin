@@ -280,6 +280,48 @@ for mfe in indigo_styled_mfes:
         ),
     )
 
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_desktop_user_menu.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Hide,
+                widgetId: 'default_contents',
+            },
+            {
+                op: PLUGIN_OPERATIONS.Insert,
+                widget: {
+                    id: 'custom_desktop_user_menu_component',
+                    type: DIRECT_PLUGIN,
+                    RenderWidget: CustomHeaderUserMenuItem,
+                },
+            },
+            """,
+        ),
+    )
+
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_mobile_user_menu.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Hide,
+                widgetId: 'default_contents',
+            },
+            {
+                op: PLUGIN_OPERATIONS.Insert,
+                widget: {
+                    id: 'custom_mobile_user_menu_component',
+                    type: DIRECT_PLUGIN,
+                    RenderWidget: CustomHeaderUserMenuItem,
+                },
+            },
+            """,
+        ),
+    )
+
 paragon_theme_urls = {
     "variants": {
         "light": {
