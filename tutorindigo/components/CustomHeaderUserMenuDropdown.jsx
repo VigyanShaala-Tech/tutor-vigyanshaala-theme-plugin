@@ -88,3 +88,4 @@ const DesktopUserMenuToggleAvatar = () => {
     </span>
   );
 };
+{% endraw %}
