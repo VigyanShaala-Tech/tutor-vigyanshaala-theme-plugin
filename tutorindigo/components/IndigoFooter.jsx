@@ -1,6 +1,35 @@
+const FOOTER_STYLE_ID = 'vs-indigo-footer-style';
+
+const ensureFooterStyle = () => {
+  if (typeof document === 'undefined') return;
+
+  const style = document.getElementById(FOOTER_STYLE_ID) || document.createElement('style');
+  style.id = FOOTER_STYLE_ID;
+  style.textContent = `
+    .vs-indigo-footer-container {
+      max-width: 1400px;
+      padding: 0 15px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 768px) {
+      .vs-indigo-footer-container {
+        padding: 0 8px;
+      }
+    }
+  `;
+
+  if (!style.parentNode) {
+    document.head.appendChild(style);
+  }
+};
+
 const IndigoFooter = () => {
   const intl = useIntl();
   const config = getConfig();
+
+  ensureFooterStyle();
 
   const PUBLIC_BASE = config.CATALOG_MICROFRONTEND_URL;
 
@@ -144,7 +173,7 @@ const IndigoFooter = () => {
         'border-t border-white/10'
       )}
     >
-      <div className="container">
+      <div className="container vs-indigo-footer-container">
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
           {/* Column 1 – Logo + Description + Social */}
           <div className='mb-3'>
