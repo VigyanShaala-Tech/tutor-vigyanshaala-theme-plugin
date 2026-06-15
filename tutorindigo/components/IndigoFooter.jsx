@@ -13,6 +13,27 @@ const ensureFooterStyle = () => {
       margin-right: auto;
     }
 
+    .vs-indigo-footer-columns {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .vs-indigo-footer-columns > div {
+      width: fit-content;
+      max-width: 440px;
+      text-align: left;
+    }
+
+    @media (min-width: 768px) {
+      .vs-indigo-footer-columns {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+    }
+
     @media (max-width: 768px) {
       .vs-indigo-footer-container {
         padding: 0 8px;
@@ -174,9 +195,9 @@ const IndigoFooter = () => {
       )}
     >
       <div className="container vs-indigo-footer-container">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        <div className="vs-indigo-footer-columns">
           {/* Column 1 – Logo + Description + Social */}
-          <div className='mb-3'>
+          <div className="mb-3">
             <div className="mb-4">
               <img
                 src={`${config.LOGO_WHITE_URL}`}
@@ -207,7 +228,7 @@ const IndigoFooter = () => {
           </div>
 
           {/* Column 2 – Get In Touch */}
-          <div className='mb-3'>
+          <div className="mb-3">
             <h4 className="fw-bold mb-4 text-white">
               {intl.formatMessage(messages['footer.getInTouch'])}
             </h4>
