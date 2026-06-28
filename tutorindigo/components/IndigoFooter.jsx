@@ -22,7 +22,46 @@ const ensureFooterStyle = () => {
       flex-direction: column;
       gap: 2rem;
     }
-
+    .vs-indigo-footer-columns .d-flex{
+      gap: .75rem;
+    }
+    .vs-indigo-footer-columns .bg-primary{
+        background: none !important;
+        width: 2.5rem;
+        height: 2.5rem;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .vs-indigo-footer-columns p, .vs-indigo-footer-columns span, .vs-indigo-footer-columns .text-white-75, .vs-indigo-footer-columns a{
+        color: #ffffffb3 !important;
+        line-height: 1.625 !important;
+        font-size: 1rem;
+    }
+    .vs-indigo-footer-columns .list-unstyled{
+      margin-bottom: 0 !important;
+    }
+    .vs-indigo-footer-container .copyright-text{
+      border-top: 1px solid #ffffff1a !important;
+      margin-top: 3rem !important;
+      padding-top: 2rem !important;
+      font-size: .875rem;
+      line-height: 1.25rem;
+      color: #ffffff80 !important;
+    }
+    .vs-indigo-footer-columns .legal-links{
+      margin-top: 12px !important;
+      padding-top: 1rem !important;
+      border-top: 1px solid #ffffff1a !important;
+    }
+    .vs-indigo-footer-columns .legal-links h4{
+      color: #ffffff80 !important;
+      letter-spacing: .05em !important;
+      text-transform: uppercase !important;
+      font-size: .875rem !important;
+      line-height: 1.25rem !important;
+      margin-bottom: .75rem !important;
+      font-weight: 700 !important;
+    }
     .vs-indigo-footer-columns > div {
       width: fit-content;
       max-width: 440px;
@@ -275,16 +314,12 @@ const IndigoFooter = () => {
                     href={`${PUBLIC_BASE}${link.path}`}
                     className="d-flex align-items-center text-white transition-fast gap-2 text-decoration-none"
                   >
-                    <Icon
-                      src={ArrowRight}
-                      size="sm"
-                    />
                     {intl.formatMessage(messages[link.id])}
                   </a>
                 </li>
               ))}
 
-              <li className="pt-4 mt-2">
+              <li className="pt-4 mt-2 legal-links">
                 <h4 className="fw-bold mb-4 text-white">
                   {intl.formatMessage(messages['footer.legal'])}
                 </h4>
@@ -305,8 +340,8 @@ const IndigoFooter = () => {
         </div>
 
         {/* Bottom copyright */}
-        <div className="mt-2 pt-4 border-top text-center text-white-50">
-          {intl.formatMessage(messages['footer.copyright'], { year: currentYear })}
+        <div className="mt-2 pt-4 border-top copyright-text">
+          {intl.formatMessage(footerMessages['footer.copyright'], { year: currentYear })}
         </div>
       </div>
     </footer>
