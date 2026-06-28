@@ -13,6 +13,10 @@ const ensureFooterStyle = () => {
       margin-right: auto;
     }
 
+    .footer-bg {
+      background-color: #2D3748;
+    }
+
     .vs-indigo-footer-columns {
       display: flex;
       flex-direction: column;
@@ -190,7 +194,7 @@ const IndigoFooter = () => {
   return (
     <footer
       className={classNames(
-        'bg-secondary text-white pt-5 pb-4',
+        'footer-bg text-white pt-5 pb-4',
         'border-t border-white/10'
       )}
     >
