@@ -347,7 +347,7 @@ const IndigoFooter = () => {
 
         {/* Bottom copyright */}
         <div className="mt-2 pt-4 border-top copyright-text">
-          {intl.formatMessage(footerMessages['footer.copyright'], { year: currentYear })}
+          {intl.formatMessage(messages['footer.copyright'], { year: currentYear })}
         </div>
       </div>
     </footer>
