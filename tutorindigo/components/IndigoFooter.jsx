@@ -149,6 +149,11 @@ const IndigoFooter = () => {
       defaultMessage: 'Contact Us',
       description: 'Link to contact page',
     },
+    'footer.link.faq': {
+      id: 'footer.link.faq',
+      defaultMessage: 'FAQs',
+      description: 'Link to faq page',
+    },
     'footer.link.privacyPolicy': {
       id: 'footer.link.privacyPolicy',
       defaultMessage: 'Privacy Policy',
@@ -215,6 +220,7 @@ const IndigoFooter = () => {
     { id: 'footer.link.courses', path: 'courses' },
     { id: 'footer.link.aboutUs', path: 'story' },
     { id: 'footer.link.contactUs', path: 'contact' },
+    { id: 'footer.link.faq', path: 'faq' },
   ];
 
   const legalLinks = [

@@ -136,6 +136,11 @@ const modifyMainMenu = ( widget ) => {
       defaultMessage: 'Our Investors',
       description: 'Submenu item under About Us',
     },
+    'public.header.nav.faq': {
+      id: 'public.header.nav.faq',
+      defaultMessage: 'FAQs',
+      description: 'Main navigation link to faq page',
+    },
     'public.header.nav.contactUs': {
       id: 'public.header.nav.contactUs',
       defaultMessage: 'Contact Us',
@@ -173,6 +178,9 @@ const modifyMainMenu = ( widget ) => {
           </a>
           <a className="dropdown-item" href={`${PUBLIC_BASE}supporter`}>
             {intl.formatMessage(messages['public.header.nav.supporters'])}
+          </a>
+          <a className="dropdown-item" href={`${PUBLIC_BASE}faq`}>
+            {intl.formatMessage(messages['public.header.nav.faq'])}
           </a>
         </div>
       ),
