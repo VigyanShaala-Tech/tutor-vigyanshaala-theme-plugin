@@ -65,7 +65,10 @@ const ensureStickyHeaderStyle = () => {
     .vs-nav-active-marker {
       display: none;
     }
-
+    #root .site-header-desktop .container-fluid .nav-container .main-nav .nav-link.active {
+        border-bottom: 2px solid var(--pgn-color-primary-base) !important;
+        color: var(--pgn-color-primary-base) !important;
+    }
     /* Mobile: active nav link */
     .site-header-mobile .nav-link.active {
       background: rgba(105, 171, 74, 0.12) !important;
