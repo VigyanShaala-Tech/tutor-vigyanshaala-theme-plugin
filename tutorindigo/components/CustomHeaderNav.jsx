@@ -39,6 +39,45 @@ const ensureStickyHeaderStyle = () => {
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
+
+    /* ── active nav link: green border-bottom (overrides Paragon default bg fill) ── */
+    .site-header-desktop .main-nav .nav-link.active {
+      background: transparent !important;
+      color: #111827 !important;
+      border-bottom: 2px solid #69AB4A;
+    }
+
+    /* About Us dropdown trigger – active when on any about sub-page.
+       Uses CSS :has() to detect the hidden .vs-nav-active-marker inside the content. */
+    .site-header-desktop .main-nav .nav-item .nav-link:has(.vs-nav-active-marker) {
+      background: transparent !important;
+      color: #111827 !important;
+      border-bottom: 2px solid #69AB4A;
+    }
+
+    /* Active sub-menu item highlight (Our Story, Team, …) */
+    .dropdown-item.vs-nav-submenu-active {
+      color: #69AB4A !important;
+      font-weight: 600;
+    }
+
+    /* Hide the active-state marker span (used by :has() selectors above) */
+    .vs-nav-active-marker {
+      display: none;
+    }
+    #root .site-header-desktop .container-fluid .nav-container .main-nav .nav-link.active {
+        border-bottom: 2px solid var(--pgn-color-primary-base) !important;
+        color: var(--pgn-color-primary-base) !important;
+    }
+    /* Mobile: active nav link */
+    .site-header-mobile .nav-link.active {
+      background: rgba(105, 171, 74, 0.12) !important;
+      color: #111827 !important;
+    }
+    .site-header-mobile .nav-link:has(.vs-nav-active-marker) {
+      background: rgba(105, 171, 74, 0.12) !important;
+      color: #111827 !important;
+    }
   `;
 
   if (!style.parentNode) {
@@ -91,14 +130,36 @@ const ensureStickyBinding = () => {
   sync();
 };
 
-const modifyMainMenu = ( widget ) => {
+const modifyMainMenu = (widget) => {
   const intl = useIntl();
   const config = getConfig();
-  const PUBLIC_BASE = config.CATALOG_MICROFRONTEND_URL; 
+  // Normalise to trailing-slash so path concatenation is consistent.
+  const PUBLIC_BASE = config.CATALOG_MICROFRONTEND_URL
+    ? config.CATALOG_MICROFRONTEND_URL.replace(/\/?$/, '/')
+    : '/public/';
   const LMS_BASE_URL = config.LMS_BASE_URL;
 
   ensureStickyHeaderStyle();
   ensureStickyBinding();
+
+  // ── active-link detection ──────────────────────────────────────────────────
+  // Extract the public MFE base path. Works for both absolute URLs (production)
+  // and relative paths (local dev fallback).
+  let publicBasePath = '/public/';
+  try {
+    publicBasePath = new URL(PUBLIC_BASE).pathname.replace(/\/?$/, '/');
+  } catch (_) {
+    publicBasePath = PUBLIC_BASE.endsWith('/') ? PUBLIC_BASE : `${PUBLIC_BASE}/`;
+  }
+
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const aboutSegments = ['story', 'team', 'supporter', 'faq'];
+
+  const isHomeActive = currentPath === publicBasePath || currentPath === publicBasePath.slice(0, -1);
+  const isDashboardActive = currentPath.startsWith('/learner-dashboard');
+  const isCoursesActive = currentPath.startsWith(`${publicBasePath}courses`);
+  const isAboutActive = aboutSegments.some((seg) => currentPath.startsWith(`${publicBasePath}${seg}`));
+  const isContactActive = currentPath.startsWith(`${publicBasePath}contact`);
 
   const messages = {
     'public.header.nav.home': {
@@ -109,7 +170,7 @@ const modifyMainMenu = ( widget ) => {
     'public.header.nav.dashboard': {
       id: 'public.header.nav.dashboard',
       defaultMessage: 'My Dashboard',
-      description: 'Dashboard navigation link to home page',
+      description: 'Dashboard navigation link',
     },
     'public.header.nav.courses': {
       id: 'public.header.nav.courses',
@@ -146,40 +207,61 @@ const modifyMainMenu = ( widget ) => {
       defaultMessage: 'Contact Us',
       description: 'Main navigation link to contact page',
     },
-  }
-
+  };
 
   widget.content.menu = [
     {
       type: 'item',
       href: PUBLIC_BASE,
       content: intl.formatMessage(messages['public.header.nav.home']),
+      isActive: isHomeActive,
     },
     {
       type: 'item',
       href: `${LMS_BASE_URL}/dashboard`,
       content: intl.formatMessage(messages['public.header.nav.dashboard']),
+      isActive: isDashboardActive,
     },
     {
       type: 'item',
       href: `${PUBLIC_BASE}courses`,
       content: intl.formatMessage(messages['public.header.nav.courses']),
+      isActive: isCoursesActive,
     },
     {
       type: 'menu',
-      content: intl.formatMessage(messages['public.header.nav.aboutUs']),
+      // Wrap content in a span so CSS :has(.vs-nav-active-marker) can target the
+      // parent nav-link trigger when on any About Us sub-page.
+      content: (
+        <span>
+          {intl.formatMessage(messages['public.header.nav.aboutUs'])}
+          {isAboutActive && <span className="vs-nav-active-marker" aria-hidden="true" />}
+        </span>
+      ),
       submenuContent: (
-        <div className=''>
-          <a className="dropdown-item" href={`${PUBLIC_BASE}story`}>
+        <div>
+          <a
+            className={`dropdown-item${currentPath.startsWith(`${publicBasePath}story`) ? ' vs-nav-submenu-active' : ''}`}
+            href={`${PUBLIC_BASE}story`}
+          >
             {intl.formatMessage(messages['public.header.nav.ourStory'])}
           </a>
-          <a className="dropdown-item" href={`${PUBLIC_BASE}team`}>
+          <a
+            className={`dropdown-item${currentPath.startsWith(`${publicBasePath}team`) ? ' vs-nav-submenu-active' : ''}`}
+            href={`${PUBLIC_BASE}team`}
+          >
             {intl.formatMessage(messages['public.header.nav.team'])}
           </a>
-          <a className="dropdown-item" href={`${PUBLIC_BASE}supporter`}>
+          <a
+            className={`dropdown-item${currentPath.startsWith(`${publicBasePath}supporter`) ? ' vs-nav-submenu-active' : ''}`}
+            href={`${PUBLIC_BASE}supporter`}
+          >
             {intl.formatMessage(messages['public.header.nav.supporters'])}
           </a>
-          <a className="dropdown-item" href={`${PUBLIC_BASE}faq`}>
+          <a
+            className={`dropdown-item${currentPath.startsWith(`${publicBasePath}faq`) ? ' vs-nav-submenu-active' : ''}`}
+            href={`${PUBLIC_BASE}faq`}
+          >
             {intl.formatMessage(messages['public.header.nav.faq'])}
           </a>
         </div>
@@ -189,6 +271,7 @@ const modifyMainMenu = ( widget ) => {
       type: 'item',
       href: `${PUBLIC_BASE}contact`,
       content: intl.formatMessage(messages['public.header.nav.contactUs']),
+      isActive: isContactActive,
     },
   ];
   return widget;

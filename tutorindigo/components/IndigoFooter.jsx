@@ -62,6 +62,10 @@ const ensureFooterStyle = () => {
       margin-bottom: .75rem !important;
       font-weight: 700 !important;
     }
+    .vs-indigo-footer-columns span.pgn__icon.pgn__icon__md {
+        color: var(--pgn-color-primary-base) !important;
+        margin-right: 0px !important;
+    }
     .vs-indigo-footer-columns > div {
       width: fit-content;
       max-width: 440px;
