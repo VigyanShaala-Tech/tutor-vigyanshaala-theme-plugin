@@ -74,6 +74,7 @@ const modifyHeaderUsername = (widget) => {
   widget.content = {
     ...widget.content,
     username: authenticatedUser?.name || authenticatedUser?.username || null,
+    avatar: authenticatedUser?.profileImage?.imageUrlFull || authenticatedUser?.avatar || null,
   };
   return widget;
 };
