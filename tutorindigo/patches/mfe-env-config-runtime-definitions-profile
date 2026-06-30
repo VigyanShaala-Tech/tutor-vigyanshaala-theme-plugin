@@ -1,0 +1,19 @@
+// Profile MFE: register ProfileHeaderAvatarSync in both header slots so the avatar
+// is forced visible and the profile image src is synced after hydrateAuthenticatedUser.
+// (Paragon light theme sets .avatar { display: none !important }; the component overrides
+// this via el.style.setProperty so no stylesheet can override it back.)
+{
+  const { PLUGIN_OPERATIONS, DIRECT_PLUGIN } = await import('@openedx/frontend-plugin-framework');
+  addPlugins(config, 'org.openedx.frontend.layout.header_desktop.v1', [
+    {
+      op: PLUGIN_OPERATIONS.Insert,
+      widget: { id: 'profile_avatar_sync_desktop', type: DIRECT_PLUGIN, priority: 1, RenderWidget: ProfileHeaderAvatarSync },
+    },
+  ]);
+  addPlugins(config, 'org.openedx.frontend.layout.header_mobile.v1', [
+    {
+      op: PLUGIN_OPERATIONS.Insert,
+      widget: { id: 'profile_avatar_sync_mobile', type: DIRECT_PLUGIN, priority: 1, RenderWidget: ProfileHeaderAvatarSync },
+    },
+  ]);
+}

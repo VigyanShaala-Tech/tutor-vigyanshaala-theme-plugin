@@ -65,6 +65,72 @@ const ChevronIcon = ({ isOpen }) => (
   </svg>
 );
 
+// ─── Profile MFE (header v6) avatar visibility fix ────────────────────────────
+// Paragon light theme ships .avatar { display: none !important }.
+// A stylesheet !important cannot be overridden by another stylesheet rule;
+// inline style.setProperty('display', ..., 'important') is the only reliable override.
+
+const PROFILE_TRIGGER_STYLE_ID = 'vs-profile-trigger-v6-style';
+
+const ensureProfileTriggerStyle = () => {
+  if (typeof document === 'undefined') return;
+  if (document.getElementById(PROFILE_TRIGGER_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = PROFILE_TRIGGER_STYLE_ID;
+  style.textContent = `
+    .site-header-desktop button.menu-trigger .avatar,
+    .site-header-mobile  button.menu-trigger .avatar {
+      width: 3em !important; height: 3em !important;
+    }
+    .site-header-desktop button.menu-trigger .avatar img,
+    .site-header-mobile  button.menu-trigger .avatar img {
+      object-fit: cover; width: 100% !important; height: 100% !important;
+    }
+    .site-header-desktop button.menu-trigger,
+    .site-header-mobile  button.menu-trigger {
+      font-weight: 700; font-size: 1rem; letter-spacing: 0.2px; color: #1f2937 !important;
+    }
+    .site-header-desktop button.menu-trigger svg,
+    .site-header-mobile  button.menu-trigger svg { transition: transform 150ms ease; }
+    .site-header-desktop button.menu-trigger[aria-expanded="true"] svg,
+    .site-header-mobile  button.menu-trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+  `;
+  document.head.appendChild(style);
+};
+
+const forceAvatarDisplay = () => {
+  if (typeof document === 'undefined') return;
+  document.querySelectorAll(
+    '.site-header-desktop button.menu-trigger .avatar, '
+    + '.site-header-mobile button.menu-trigger .avatar',
+  ).forEach((el) => {
+    el.style.setProperty('display', 'inline-flex', 'important');
+  });
+};
+
+const ProfileHeaderAvatarSync = () => {
+  const { authenticatedUser } = useContext(AppContext);
+  const avatarUrl = authenticatedUser?.profileImage?.imageUrlFull || authenticatedUser?.avatar;
+
+  useEffect(() => {
+    ensureProfileTriggerStyle();
+    forceAvatarDisplay();
+  }, []);
+
+  useEffect(() => {
+    if (!avatarUrl) return;
+    forceAvatarDisplay();
+    document.querySelectorAll(
+      '.site-header-desktop button.menu-trigger .avatar img, '
+      + '.site-header-mobile button.menu-trigger .avatar img',
+    ).forEach((img) => {
+      img.src = avatarUrl; // eslint-disable-line no-param-reassign
+    });
+  }, [avatarUrl]);
+
+  return null;
+};
+
 // For MFEs using @edx/frontend-component-header v6 (no DesktopUserMenuToggleSlot),
 // override the username prop on DesktopHeader/MobileHeader via the header_desktop.v1
 // and header_mobile.v1 slots so the full display name appears instead of the login name.
