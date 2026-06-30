@@ -322,6 +322,25 @@ for mfe in indigo_styled_mfes:
         ),
     )
 
+# Profile MFE uses @edx/frontend-component-header v6 which has no DesktopUserMenuToggleSlot.
+# Use header_desktop.v1 / header_mobile.v1 (both support mergeProps) to override the
+# username prop with the user's full display name instead of their login username.
+for slot in [
+    "org.openedx.frontend.layout.header_desktop.v1",
+    "org.openedx.frontend.layout.header_mobile.v1",
+]:
+    PLUGIN_SLOTS.add_item((
+        "profile",
+        slot,
+        """
+            {
+                op: PLUGIN_OPERATIONS.Modify,
+                widgetId: 'default_contents',
+                fn: modifyHeaderUsername,
+            },
+        """,
+    ))
+
 paragon_theme_urls = {
     "variants": {
         "light": {

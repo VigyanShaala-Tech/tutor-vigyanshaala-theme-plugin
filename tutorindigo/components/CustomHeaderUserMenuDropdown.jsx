@@ -65,6 +65,20 @@ const ChevronIcon = ({ isOpen }) => (
   </svg>
 );
 
+// For MFEs using @edx/frontend-component-header v6 (no DesktopUserMenuToggleSlot),
+// override the username prop on DesktopHeader/MobileHeader via the header_desktop.v1
+// and header_mobile.v1 slots so the full display name appears instead of the login name.
+const modifyHeaderUsername = (widget) => {
+  const { authenticatedUser } = useContext(AppContext);
+  // eslint-disable-next-line no-param-reassign
+  widget.content = {
+    ...widget.content,
+    username: authenticatedUser?.name || authenticatedUser?.username || null,
+    avatar: authenticatedUser?.profileImage?.imageUrlFull || authenticatedUser?.avatar || null,
+  };
+  return widget;
+};
+
 const DesktopUserMenuToggleAvatar = () => {
   const { authenticatedUser } = useContext(AppContext);
   const avatar = authenticatedUser?.avatar;
