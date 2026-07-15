@@ -25,12 +25,42 @@ const ensureFooterStyle = () => {
     .vs-indigo-footer-columns .d-flex{
       gap: .75rem;
     }
-    .vs-indigo-footer-columns .bg-primary{
-        background: none !important;
+    .vs-indigo-footer-social-list{
+        gap: 0.75rem;
+    }
+    .vs-indigo-footer-social-link{
+        background: rgba(255, 255, 255, 0.1);
         width: 2.5rem;
         height: 2.5rem;
         margin: 0 !important;
         padding: 0 !important;
+        transition: background-color 300ms ease;
+    }
+    .vs-indigo-footer-social-link:hover{
+        background: var(--pgn-color-primary-base, #69AB4A);
+        transform: translateY(-3px) scale(1.1);
+    }
+    .vs-indigo-footer-social-icon{
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+    .vs-indigo-footer-nav-link{
+        color: rgba(255, 255, 255, 0.7) !important;
+        transition: color 300ms ease;
+    }
+    .vs-indigo-footer-nav-link:hover{
+        color: var(--pgn-color-primary-base, #69AB4A) !important;
+    }
+    .vs-indigo-footer-nav-arrow{
+        opacity: 0;
+        margin-left: -1.5rem;
+        width: 1rem;
+        height: 1rem;
+        transition: opacity 300ms ease, margin-left 300ms ease;
+    }
+    .vs-indigo-footer-nav-link:hover .vs-indigo-footer-nav-arrow{
+        opacity: 1;
+        margin-left: 0;
     }
     .vs-indigo-footer-columns p, .vs-indigo-footer-columns span, .vs-indigo-footer-columns .text-white-75, .vs-indigo-footer-columns a{
         color: #ffffffb3 !important;
@@ -72,12 +102,39 @@ const ensureFooterStyle = () => {
       text-align: left;
     }
 
-    @media (min-width: 768px) {
+    /* < 768px (default/base rules above): 1 column, stacked, left aligned */
+
+    /* 768px–1020px: 2 columns side by side (logo/social + Get In Touch);
+       the 3rd column (Explore, with Legal nested inside it) drops to a
+       full-width row underneath, left aligned. */
+    @media (min-width: 768px) and (max-width: 1020px) {
+      .vs-indigo-footer-columns {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+        gap: 2rem 1.5rem;
+      }
+      .vs-indigo-footer-columns > div:nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .vs-indigo-footer-columns > div:nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .vs-indigo-footer-columns > div:nth-child(3) {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+    }
+
+    /* > 1020px: all 3 columns side by side */
+    @media (min-width: 1021px) {
       .vs-indigo-footer-columns {
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: normal;
         align-items: flex-start;
-        gap: 1.5rem;
+        gap: 5rem;
       }
     }
 
@@ -92,6 +149,53 @@ const ensureFooterStyle = () => {
     document.head.appendChild(style);
   }
 };
+
+// Outline social icons (Lucide paths) matching the mockup design exactly —
+// Paragon's Bootstrap-icon set (BsFacebook etc.) ships filled glyphs, which
+// visually mismatch the mockup's thin 2px-stroke outline icons.
+const SOCIAL_ICON_PATHS = {
+  facebook: (
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  ),
+  twitter: (
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+  ),
+  linkedin: (
+    <>
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect width="4" height="12" x="2" y="9" />
+      <circle cx="4" cy="4" r="2" />
+    </>
+  ),
+  instagram: (
+    <>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </>
+  ),
+  youtube: (
+    <>
+      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+      <path d="m10 15 5-3-5-3z" />
+    </>
+  ),
+};
+
+const SocialIcon = ({ name }) => (
+  <svg
+    className="vs-indigo-footer-social-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {SOCIAL_ICON_PATHS[name]}
+  </svg>
+);
 
 const IndigoFooter = () => {
   const intl = useIntl();
@@ -233,11 +337,11 @@ const IndigoFooter = () => {
   ];
 
   const socialLinks = [
-    { icon: BsFacebook,  id: 'footer.social.facebook',  href: 'https://www.facebook.com/VigyanShaala/' },
-    { icon: BsTwitter,   id: 'footer.social.twitter',   href: 'https://x.com/VIGYANshaala' },
-    { icon: BsLinkedin,  id: 'footer.social.linkedin',  href: 'https://www.linkedin.com/company/vigyanshaala/' },
-    { icon: BsInstagram, id: 'footer.social.instagram', href: 'https://instagram.com/vigyanshaala' },
-    { icon: BsYoutube,   id: 'footer.social.youtube',   href: 'https://www.youtube.com/channel/UC-vXDr6nyeD4FfA5RPSj22w' },
+    { icon: 'facebook',  id: 'footer.social.facebook',  href: 'https://www.facebook.com/VigyanShaala/' },
+    { icon: 'twitter',   id: 'footer.social.twitter',   href: 'https://x.com/VIGYANshaala' },
+    { icon: 'linkedin',  id: 'footer.social.linkedin',  href: 'https://www.linkedin.com/company/vigyanshaala/' },
+    { icon: 'instagram', id: 'footer.social.instagram', href: 'https://instagram.com/vigyanshaala' },
+    { icon: 'youtube',   id: 'footer.social.youtube',   href: 'https://www.youtube.com/channel/UC-vXDr6nyeD4FfA5RPSj22w' },
   ];
 
   return (
@@ -263,18 +367,18 @@ const IndigoFooter = () => {
               {intl.formatMessage(messages['footer.description'])}
             </p>
 
-            <div className="d-flex flex-wrap">
+            <div className="d-flex flex-wrap vs-indigo-footer-social-list">
               {socialLinks.map((social) => (
                 <a
                   key={social.id}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="d-flex align-items-center justify-content-center rounded-circle bg-primary p-3 text-white hover-bg-primary transition-fast mr-4 mb-2"
+                  className="d-flex align-items-center justify-content-center rounded-circle vs-indigo-footer-social-link text-white"
                   aria-label={intl.formatMessage(messages[social.id])}
                   title={intl.formatMessage(messages[social.id])}
                 >
-                  <Icon src={social.icon} size="lg" />
+                  <SocialIcon name={social.icon} />
                 </a>
               ))}
             </div>
@@ -322,8 +426,21 @@ const IndigoFooter = () => {
                 <li key={link.id} className="mb-2">
                   <a
                     href={`${PUBLIC_BASE}${link.path}`}
-                    className="d-flex align-items-center text-white transition-fast gap-2 text-decoration-none"
+                    className="d-flex align-items-center vs-indigo-footer-nav-link gap-2 text-decoration-none"
                   >
+                    <svg
+                      className="vs-indigo-footer-nav-arrow"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
                     {intl.formatMessage(messages[link.id])}
                   </a>
                 </li>
@@ -338,8 +455,21 @@ const IndigoFooter = () => {
                   <div key={link.id} className="mb-1">
                     <a
                       href={`${PUBLIC_BASE}${link.path}`}
-                      className="d-flex align-items-center text-white transition-fast gap-2 text-decoration-none"
+                      className="d-flex align-items-center vs-indigo-footer-nav-link gap-2 text-decoration-none"
                     >
+                      <svg
+                        className="vs-indigo-footer-nav-arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                      </svg>
                       {intl.formatMessage(messages[link.id])}
                     </a>
                   </div>
