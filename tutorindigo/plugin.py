@@ -259,6 +259,21 @@ for mfe in indigo_styled_mfes:
         ),
     )
 
+    # Override built-in 769px header switch: show mobile header for width < 1110.
+    PLUGIN_SLOTS.add_item(
+        (
+            mfe,
+            "org.openedx.frontend.layout.header_desktop.v1",
+            """
+            {
+                op: PLUGIN_OPERATIONS.Wrap,
+                widgetId: 'default_contents',
+                wrapper: wrapDesktopHeaderForBreakpoint,
+            }
+            """,
+        ),
+    )
+
     PLUGIN_SLOTS.add_item(
         (
             mfe,
