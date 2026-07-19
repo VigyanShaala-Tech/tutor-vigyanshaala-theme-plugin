@@ -6,6 +6,26 @@ const ensureUserMenuDropdownStyle = () => {
   const style = document.getElementById(USER_MENU_DROPDOWN_STYLE_ID) || document.createElement('style');
   style.id = USER_MENU_DROPDOWN_STYLE_ID;
   style.textContent = `
+    #root header.site-header-desktop .menu button{
+      font-weight: 700 !important;
+      font-size: 1rem !important;
+      letter-spacing: 0.2px;
+      color: #1f2937 !important;
+      text-transform: capitalize;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    #root header.site-header-desktop .menu button .avatar{
+        display: inline-flex !important;
+        height: auto !important;
+        width: auto !important;
+    }
+    #root header.site-header-desktop .menu button .avatar img{
+      width: 3em !important;
+      height: 3em !important;
+      object-fit: cover;
+    }
     .vs-user-menu-toggle-avatar {
       width: 3em;
       height: 3em;
