@@ -8,7 +8,7 @@ const ensureFooterStyle = () => {
   style.textContent = `
     .vs-indigo-footer-container {
       max-width: 1400px;
-      padding: 0 15px;
+      padding: 0 32px;
       margin-left: auto;
       margin-right: auto;
     }
