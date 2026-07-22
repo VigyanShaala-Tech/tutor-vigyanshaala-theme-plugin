@@ -5,4 +5,3 @@
 {{- patch("CustomHeaderNav.jsx") }}
 {{- patch("CustomHeaderUserMenuDropdown.jsx") }}
 {{- patch("CustomHeaderUserMenuItem.jsx") }}
-{{- patch("ResponsiveHeaderBreakpoint.jsx") }}

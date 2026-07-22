@@ -132,6 +132,8 @@ const ensureStickyBinding = () => {
 
 const modifyMainMenu = (widget) => {
   const intl = useIntl();
+  const { authenticatedUser } = useContext(AppContext);
+  const isLoggedIn = authenticatedUser !== null;
   const config = getConfig();
   // Normalise to trailing-slash so path concatenation is consistent.
   const PUBLIC_BASE = config.CATALOG_MICROFRONTEND_URL
@@ -216,12 +218,12 @@ const modifyMainMenu = (widget) => {
       content: intl.formatMessage(messages['public.header.nav.home']),
       isActive: isHomeActive,
     },
-    {
+    ...(isLoggedIn ? [{
       type: 'item',
       href: `${LMS_BASE_URL}/dashboard`,
       content: intl.formatMessage(messages['public.header.nav.dashboard']),
       isActive: isDashboardActive,
-    },
+    }] : []),
     {
       type: 'item',
       href: `${PUBLIC_BASE}courses`,

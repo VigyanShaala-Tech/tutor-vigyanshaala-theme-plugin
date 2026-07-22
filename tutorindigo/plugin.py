@@ -198,6 +198,30 @@ for path in itertools.chain(
     with open(path, encoding="utf-8") as patch_file:
         hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
+# MobileHeader is only available in MFEs that ship @edx/frontend-component-header.
+# Authn / authoring do not, so keep those imports out of the global env.config.jsx
+# and load them only for indigo-styled MFEs.
+with open(
+    os.path.join(
+        str(importlib_resources.files("tutorindigo") / "components"),
+        "ResponsiveHeaderBreakpoint.jsx",
+    ),
+    encoding="utf-8",
+) as breakpoint_file:
+    responsive_header_breakpoint_js = breakpoint_file.read()
+
+for mfe in indigo_styled_mfes:
+    hooks.Filters.ENV_PATCHES.add_item(
+        (
+            f"mfe-env-config-runtime-definitions-{mfe}",
+            """
+const Responsive = (await import('react-responsive')).default;
+const MobileHeader = (await import('@edx/frontend-component-header/dist/mobile-header/MobileHeader')).default;
+"""
+            + responsive_header_breakpoint_js,
+        ),
+    )
+
 
 for mfe in indigo_styled_mfes:
     PLUGIN_SLOTS.add_item(
