@@ -191,12 +191,12 @@ const modifyMainMenu = (widget) => {
     },
     'public.header.nav.team': {
       id: 'public.header.nav.team',
-      defaultMessage: 'Team',
+      defaultMessage: 'Success Stories',
       description: 'Submenu item under About Us',
     },
     'public.header.nav.supporters': {
       id: 'public.header.nav.supporters',
-      defaultMessage: 'Our Investors',
+      defaultMessage: 'Our Supporters',
       description: 'Submenu item under About Us',
     },
     'public.header.nav.faq': {
