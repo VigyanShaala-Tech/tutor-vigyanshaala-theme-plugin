@@ -11,13 +11,23 @@ const studioUserMenuMessages = {
   },
   lms: {
     id: 'studio.user.menu.lms',
-    defaultMessage: 'LMS',
+    defaultMessage: 'LMS Dashboard',
     description: 'LMS link label in Studio header user menu',
   },
   controlHub: {
     id: 'studio.user.menu.control.hub',
     defaultMessage: 'Control Hub',
     description: 'Control Hub link label in Studio header user menu',
+  },
+  tasAdmin: {
+    id: 'studio.user.menu.tas.admin',
+    defaultMessage: 'TAS Admin',
+    description: 'TAS admin link label in Studio header user menu',
+  },
+  analytics: {
+    id: 'studio.user.menu.analytics',
+    defaultMessage: 'Analytics',
+    description: 'Analytics link label in Studio header user menu',
   },
   logout: {
     id: 'studio.user.menu.logout',
@@ -42,6 +52,17 @@ const CustomStudioHeaderUserMenuItem = ({ studioBaseUrl, logoutUrl }) => {
       {canSeePrivilegedItems && (
         <Dropdown.Item href={`${config.LMS_BASE_URL}/control-hub`} className="small">
           {intl.formatMessage(studioUserMenuMessages.controlHub)}
+        </Dropdown.Item>
+      )}
+      {/* URLs come from MFE_CONFIG_OVERRIDES["authoring"]; the item is hidden when unset. */}
+      {canSeePrivilegedItems && config.TAS_ADMIN_MICROFRONTEND_URL && (
+        <Dropdown.Item href={config.TAS_ADMIN_MICROFRONTEND_URL} className="small">
+          {intl.formatMessage(studioUserMenuMessages.tasAdmin)}
+        </Dropdown.Item>
+      )}
+      {canSeePrivilegedItems && config.ANALYTICS_URL && (
+        <Dropdown.Item href={config.ANALYTICS_URL} className="small">
+          {intl.formatMessage(studioUserMenuMessages.analytics)}
         </Dropdown.Item>
       )}
       <Dropdown.Item href={logoutUrl} className="small">
