@@ -199,8 +199,8 @@ for path in itertools.chain(
         hooks.Filters.ENV_PATCHES.add_item((os.path.basename(path), patch_file.read()))
 
 # MobileHeader is only available in MFEs that ship @edx/frontend-component-header.
-# Authn / authoring do not, so keep those imports out of the global env.config.jsx
-# and load them only for indigo-styled MFEs.
+# Authn does not, and authoring uses StudioHeader instead, so keep those imports out of
+# the global env.config.jsx and load them only for indigo-styled MFEs.
 with open(
     os.path.join(
         str(importlib_resources.files("tutorindigo") / "components"),
@@ -360,6 +360,50 @@ for mfe in indigo_styled_mfes:
             """,
         ),
     )
+
+# Authoring (Studio) renders StudioHeader, which has none of the learner
+# header slots above. Its user dropdown items come from the authoring fork's
+# studio_header_user_menu.v1 slot.
+with open(
+    os.path.join(
+        str(importlib_resources.files("tutorindigo") / "components"),
+        "CustomStudioHeaderUserMenuItem.jsx",
+    ),
+    encoding="utf-8",
+) as studio_user_menu_file:
+    studio_user_menu_js = studio_user_menu_file.read()
+
+hooks.Filters.ENV_PATCHES.add_item(
+    (
+        "mfe-env-config-runtime-definitions-authoring",
+        """
+const { Dropdown } = await import('@openedx/paragon');
+const { Link } = await import('react-router-dom');
+"""
+        + studio_user_menu_js,
+    ),
+)
+
+PLUGIN_SLOTS.add_item(
+    (
+        "authoring",
+        "org.openedx.frontend.authoring.studio_header_user_menu.v1",
+        """
+            {
+                op: PLUGIN_OPERATIONS.Hide,
+                widgetId: 'default_contents',
+            },
+            {
+                op: PLUGIN_OPERATIONS.Insert,
+                widget: {
+                    id: 'custom_studio_user_menu_component',
+                    type: DIRECT_PLUGIN,
+                    RenderWidget: CustomStudioHeaderUserMenuItem,
+                },
+            },
+            """,
+    ),
+)
 
 # Profile MFE uses @edx/frontend-component-header v6 which has no DesktopUserMenuToggleSlot.
 # Use header_desktop.v1 / header_mobile.v1 (both support mergeProps) to override the
