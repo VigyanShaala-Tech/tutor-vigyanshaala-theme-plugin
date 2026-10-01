@@ -423,3 +423,27 @@ for slot in [
             },
         """,
     ))
+
+
+paragon_theme_urls = {
+    "variants": {
+        "light": {
+            "urls": {
+                "default": "https://raw.githubusercontent.com/edly-io/brand-openedx/refs/heads/ulmo/indigo/dist/light.min.css",
+                "brandOverride": "https://raw.githubusercontent.com/edly-io/brand-openedx/refs/heads/ulmo/indigo/dist/light.min.css",
+            },
+        },
+        "dark": {
+            "urls": {
+                "default": "https://raw.githubusercontent.com/edly-io/brand-openedx/refs/heads/ulmo/indigo/dist/dark.min.css",
+                "brandOverride": "https://raw.githubusercontent.com/edly-io/brand-openedx/refs/heads/ulmo/indigo/dist/dark.min.css",
+            }
+        },
+    }
+}
+
+fstring = f"""
+MFE_CONFIG["PARAGON_THEME_URLS"] = {json.dumps(paragon_theme_urls)}
+"""
+
+hooks.Filters.ENV_PATCHES.add_item(("mfe-lms-common-settings", fstring))
