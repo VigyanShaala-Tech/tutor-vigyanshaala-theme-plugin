@@ -52,6 +52,8 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("indigo", "build/openedx/themes"),
         ("indigo/env.config.jsx", "plugins/mfe/build/mfe"),
+        # Header/footer/brand for frontend-base MFEs (indigo_frontend_base_mfes)
+        ("vs-frontend-base", "plugins/mfe/build/mfe"),
     ],
 )
 
@@ -128,6 +130,33 @@ for mfe in indigo_styled_mfes:
                 """
 RUN npm install '@edx/brand@github:@VigyanShaala-Tech/vs-brand#vigyanshaala-brand'
 """,  # noqa: E501
+            ),
+        ]
+    )
+
+#  MFEs built on @openedx/frontend-base (e.g. progress) instead of
+#  frontend-platform. They do not load env.config.jsx, so the PLUGIN_SLOTS below
+#  cannot reach them. Instead they get templates/vs-frontend-base/site-chrome,
+#  which renders the same header/footer components through frontend-base slots,
+#  copied over the MFE's src/site-chrome/ before the build.
+indigo_frontend_base_mfes = [
+    "progress",
+]
+
+for mfe in indigo_frontend_base_mfes:
+    hooks.Filters.ENV_PATCHES.add_items(
+        [
+            (
+                f"mfe-dockerfile-post-npm-install-{mfe}",
+                """
+RUN npm install '@edx/brand@github:@VigyanShaala-Tech/vs-brand#vigyanshaala-brand'
+""",  # noqa: E501
+            ),
+            (
+                f"mfe-dockerfile-pre-npm-build-{mfe}",
+                """
+COPY vs-frontend-base/site-chrome /openedx/app/src/site-chrome
+""",
             ),
         ]
     )
