@@ -1,0 +1,24 @@
+<clickhouse>
+    <!--
+    Vigyanshaala: per-query ClickHouse limits (tutor-vigyanshaala-theme-plugin).
+
+    Applied to the "default" settings profile, which every Aspects user gets
+    (ch_admin, ch_report used by Superset, ch_lrs, ch_vector, ch_cms).
+    A separate file, not the "clickhouse-user-config" patch: Aspects' user_config.xml
+    already has a <profiles> block, and a second one in the same file would be ignored.
+    ClickHouse merges the files in users.d/ element by element.
+
+    max_memory_usage: hard limit per query.
+    max_bytes_before_external_*: spill GROUP BY / ORDER BY to disk before that limit,
+    so large dashboard queries still finish (more slowly) instead of failing.
+    max_threads: fewer parallel streams, so a query holds less memory at a time.
+    -->
+    <profiles>
+        <default>
+            <max_memory_usage>{{ VS_CLICKHOUSE_MAX_MEMORY_USAGE }}</max_memory_usage>
+            <max_bytes_before_external_group_by>{{ VS_CLICKHOUSE_MAX_BYTES_BEFORE_EXTERNAL_GROUP_BY }}</max_bytes_before_external_group_by>
+            <max_bytes_before_external_sort>{{ VS_CLICKHOUSE_MAX_BYTES_BEFORE_EXTERNAL_SORT }}</max_bytes_before_external_sort>
+            <max_threads>{{ VS_CLICKHOUSE_MAX_THREADS }}</max_threads>
+        </default>
+    </profiles>
+</clickhouse>

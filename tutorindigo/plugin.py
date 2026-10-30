@@ -108,6 +108,23 @@ hooks.Filters.CONFIG_UNIQUE.add_items(
 )
 hooks.Filters.CONFIG_OVERRIDES.add_items(list(config["overrides"].items()))
 
+# ClickHouse (Aspects) memory limits, see the production incident of 29 Oct 2026.
+# templates/aspects/apps/clickhouse/{config,users}/zz-vs-memory-limits.xml are
+# rendered by Aspects' own ("aspects/apps", "plugins") template target, so they
+# only appear where the aspects plugin is enabled. Override with e.g.
+#   tutor config save --set VS_CLICKHOUSE_MAX_SERVER_MEMORY_USAGE=6442450944
+hooks.Filters.CONFIG_DEFAULTS.add_items(
+    [
+        ("VS_CLICKHOUSE_MAX_SERVER_MEMORY_USAGE", 4 * 1024**3),  # whole server
+        ("VS_CLICKHOUSE_MAX_MEMORY_USAGE", 2 * 1024**3),  # per query
+        ("VS_CLICKHOUSE_MAX_BYTES_BEFORE_EXTERNAL_GROUP_BY", 1024**3),
+        ("VS_CLICKHOUSE_MAX_BYTES_BEFORE_EXTERNAL_SORT", 1024**3),
+        ("VS_CLICKHOUSE_MAX_THREADS", 8),
+        ("VS_CLICKHOUSE_MARK_CACHE_SIZE", 512 * 1024**2),
+        ("VS_CLICKHOUSE_UNCOMPRESSED_CACHE_SIZE", 512 * 1024**2),
+    ]
+)
+
 
 #  MFEs that are styled using Indigo
 indigo_styled_mfes = [

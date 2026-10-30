@@ -1,0 +1,18 @@
+<clickhouse>
+    <!--
+    Vigyanshaala: server-wide ClickHouse memory limits (tutor-vigyanshaala-theme-plugin).
+
+    ClickHouse shares the host with the LMS, Celery workers, MySQL and MongoDB, but by
+    default sizes itself from the whole machine's RAM (max_server_memory_usage_to_ram_ratio 0.9).
+    On 29 Oct 2026 one unfiltered Superset chart query grew past 3 GB in under a second and
+    the host ran out of memory. With this cap, ClickHouse fails that query with
+    MEMORY_LIMIT_EXCEEDED instead.
+
+    Rendered into env/plugins/aspects/apps/clickhouse/config/, which is mounted on
+    /etc/clickhouse-server/config.d/ and merged with Aspects' server_config.xml.
+    Values come from the VS_CLICKHOUSE_* Tutor settings.
+    -->
+    <max_server_memory_usage>{{ VS_CLICKHOUSE_MAX_SERVER_MEMORY_USAGE }}</max_server_memory_usage>
+    <mark_cache_size>{{ VS_CLICKHOUSE_MARK_CACHE_SIZE }}</mark_cache_size>
+    <uncompressed_cache_size>{{ VS_CLICKHOUSE_UNCOMPRESSED_CACHE_SIZE }}</uncompressed_cache_size>
+</clickhouse>
