@@ -63,6 +63,16 @@ MFEs built on `@openedx/frontend-base` (listed in `indigo_frontend_base_mfes`; t
 - The MFE needs an `MFE_CONFIG_OVERRIDES["<mfe>"]` entry (`CATALOG_MICROFRONTEND_URL`, `LOGO_WHITE_URL`) like the other MFEs; without it the module falls back to `<origin>/public/` and the normal logo.
 - Where a `tutor-mfe-bookworm` plugin replaces tutor-mfe's `mfe/build/mfe/Dockerfile` with a static file (UAT does), **no** `mfe-dockerfile-*` patch from this plugin is applied; the same lines must be added to that static Dockerfile by hand.
 
+## ClickHouse (Aspects) memory limits
+
+Added after the 29 Oct 2026 production outage (see `../production-incidents/CLAUDE.md`). This is not MFE work, but this plugin is the one installed (editable) on production, so it lives here.
+
+- `templates/aspects/apps/clickhouse/config/zz-vs-memory-limits.xml`: server-wide `max_server_memory_usage`, `mark_cache_size`, `uncompressed_cache_size`.
+- `templates/aspects/apps/clickhouse/users/zz-vs-memory-limits.xml`: `default` profile `max_memory_usage` (per query), `max_bytes_before_external_group_by` / `_sort` (spill to disk), `max_threads`. Every Aspects user (`ch_admin`, `ch_report` = Superset, `ch_lrs`, `ch_vector`, `ch_cms`) uses this profile.
+- No `ENV_TEMPLATE_TARGETS` entry of our own: Aspects' `("aspects/apps", "plugins")` target renders matching templates from every plugin's template root, so the files appear only where `aspects` is enabled.
+- These are separate files on purpose, not the `clickhouse-user-config` / `clickhouse-server-config` patches. Aspects' `user_config.xml` already has a `<profiles>` block, and ClickHouse ignores a second one in the same file. Files in `config.d/` and `users.d/` are merged element by element.
+- Values come from `VS_CLICKHOUSE_*` settings in `plugin.py` (4 GB server, 2 GB per query, 1 GB spill thresholds, 8 threads, 512 MB caches). Apply with `tutor config save` + `tutor local restart clickhouse`. Verify with `SELECT value FROM system.server_settings WHERE name='max_server_memory_usage'` and `SELECT name, value FROM system.settings WHERE name LIKE 'max_memory_usage'` as `ch_report`.
+
 ## Other plugin.py behavior
 
 - Config keys are `INDIGO_*` (`PRIMARY_COLOR` `#69AB4A`, `ENABLE_DARK_TOGGLE` default `False`, `FOOTER_NAV_LINKS`, `WELCOME_MESSAGE`). `ENABLE_DARK_TOGGLE` and `FOOTER_NAV_LINKS` are exposed to MFEs through `MFE_CONFIG` in the LMS dev/prod settings patches.
